@@ -1,18 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
+import facultyService from "../services/facultyService";
 
 const Register = () => {
-  const [name, setName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("GUEST");
+  const [facultyId, setFacultyId] = useState("");
+  const [faculties, setFaculties] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingFaculties, setIsLoadingFaculties] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const fetchFaculties = async () => {
+      setIsLoadingFaculties(true);
+      try {
+        const response = await facultyService.getAllFaculties();
+        // Make sure faculties is always an array
+        setFaculties(
+          Array.isArray(response?.results)
+            ? response.results
+            : Array.isArray(response)
+            ? response
+            : []
+        );
+      } catch (err) {
+        console.error("Failed to fetch faculties", err);
+        setFaculties([]);
+      } finally {
+        setIsLoadingFaculties(false);
+      }
+    };
+
+    fetchFaculties();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,14 +55,24 @@ const Register = () => {
 
     setIsLoading(true);
 
+    const userData = {
+      email,
+      password,
+      full_name: fullName,
+      role,
+      faculty_fk: facultyId || null,
+    };
+
     try {
-      await register(name, email, password);
-      // Redirect to login after successful registration
-      navigate("/login", {
-        state: { message: t("registrationSuccessful") },
-      });
+      const response = await register(userData);
+      // Redirect to dashboard after successful registration
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || t("registrationError"));
+      setError(
+        err.response?.data?.detail ||
+          Object.values(err.response?.data || {})[0]?.[0] ||
+          t("registrationError")
+      );
     } finally {
       setIsLoading(false);
     }
@@ -73,13 +112,13 @@ const Register = () => {
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="space-y-4">
           <input
-            id="name"
-            name="name"
+            id="full-name"
+            name="full_name"
             type="text"
             autoComplete="name"
             required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
             placeholder={t("fullNamePlaceholder")}
           />
@@ -116,6 +155,56 @@ const Register = () => {
             className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
             placeholder={t("confirmPasswordPlaceholder")}
           />
+
+          <div>
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {t("role")}
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="mt-1 block w-full py-3 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+            >
+              <option value="GUEST">{t("guest")}</option>
+              <option value="STUDENT">{t("student")}</option>
+              <option value="INSTRUCTOR">{t("instructor")}</option>
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="faculty"
+              className="block text-sm font-medium text-gray-700"
+            >
+              {t("faculty")}
+            </label>
+            <select
+              id="faculty"
+              name="faculty"
+              value={facultyId}
+              onChange={(e) => setFacultyId(e.target.value)}
+              className="mt-1 block w-full py-3 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+              disabled={isLoadingFaculties}
+            >
+              <option value="">{t("selectFaculty")}</option>
+              {Array.isArray(faculties) && faculties.length > 0 ? (
+                faculties.map((faculty) => (
+                  <option key={faculty.id} value={faculty.id}>
+                    {faculty.name}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  {t("noFacultiesAvailable")}
+                </option>
+              )}
+            </select>
+          </div>
         </div>
 
         <div>

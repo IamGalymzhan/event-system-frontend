@@ -21,7 +21,12 @@ const Login = () => {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || t("loginError"));
+      console.error("Login error:", err);
+      setError(
+        err.response?.data?.non_field_errors?.[0] ||
+          err.response?.data?.detail ||
+          t("loginError")
+      );
     } finally {
       setIsLoading(false);
     }

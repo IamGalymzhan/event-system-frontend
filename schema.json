@@ -1,0 +1,2509 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Event System API",
+      "description": "API documentation for Event System",
+      "termsOfService": "https://www.example.com/terms/",
+      "contact": {
+        "email": "contact@example.com"
+      },
+      "license": {
+        "name": "BSD License"
+      },
+      "version": "v1"
+    },
+    "host": "127.0.0.1:8000",
+    "schemes": [
+      "http"
+    ],
+    "basePath": "/api",
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "securityDefinitions": {
+      "Basic": {
+        "type": "basic"
+      }
+    },
+    "security": [
+      {
+        "Basic": []
+      }
+    ],
+    "paths": {
+      "/events/events/": {
+        "get": {
+          "operationId": "events_events_list",
+          "description": "Returns a list of all events. Can filter by upcoming=true.",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "A search term.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "post": {
+          "operationId": "events_events_create",
+          "description": "Create a new event. For image upload, use multipart/form-data",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "required": [
+                  "title",
+                  "description",
+                  "start_date",
+                  "event_type"
+                ],
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "title",
+                  "description",
+                  "start_date",
+                  "event_type"
+                ],
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/events/{id}/": {
+        "get": {
+          "operationId": "events_events_read",
+          "description": "Returns details of a specific event.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Event"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "put": {
+          "operationId": "events_events_update",
+          "description": "Update an existing event. For image upload, use multipart/form-data",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "patch": {
+          "operationId": "events_events_partial_update",
+          "description": "Partially update an existing event. For image upload, use multipart/form-data",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "description": "Event title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "Event description",
+                    "type": "string"
+                  },
+                  "start_date": {
+                    "description": "Event start date and time",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event_type": {
+                    "description": "Event type (WORKSHOP, CONFERENCE, SEMINAR, SOCIAL, ACADEMIC, OTHER)",
+                    "type": "string"
+                  },
+                  "faculty": {
+                    "description": "Faculty ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Event image file",
+                    "type": "file"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "delete": {
+          "operationId": "events_events_delete",
+          "description": "Deletes a specific event (authenticated users only).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/events/{id}/attendees/": {
+        "get": {
+          "operationId": "events_events_attendees",
+          "description": "Get the list of attendees for this event (only for event creator or admin)",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Attendee"
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/events/{id}/statistics/": {
+        "get": {
+          "operationId": "events_events_statistics",
+          "description": "Get statistics for this event (only for event creator or admin)",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventStatistics"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/events/{id}/statistics_pdf/": {
+        "get": {
+          "operationId": "events_events_statistics_pdf",
+          "description": "Get statistics for this event in PDF format (in Russian, only for event creator or admin)",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "PDF file"
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/events/{id}/upload_gallery_images/": {
+        "post": {
+          "operationId": "events_events_upload_gallery_images",
+          "description": "Upload multiple images to the event gallery.",
+          "parameters": [
+            {
+              "name": "title",
+              "in": "formData",
+              "required": true,
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            {
+              "name": "description",
+              "in": "formData",
+              "required": true,
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "name": "start_date",
+              "in": "formData",
+              "required": true,
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "name": "event_type",
+              "in": "formData",
+              "required": false,
+              "type": "string",
+              "enum": [
+                "WORKSHOP",
+                "CONFERENCE",
+                "SEMINAR",
+                "SOCIAL",
+                "ACADEMIC",
+                "OTHER"
+              ],
+              "default": "OTHER"
+            },
+            {
+              "name": "creator",
+              "in": "formData",
+              "required": false,
+              "type": "integer",
+              "x-nullable": true
+            },
+            {
+              "name": "faculty",
+              "in": "formData",
+              "required": false,
+              "type": "integer",
+              "x-nullable": true
+            },
+            {
+              "name": "image",
+              "in": "formData",
+              "required": false,
+              "type": "file",
+              "x-nullable": true
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Event"
+              }
+            }
+          },
+          "consumes": [
+            "multipart/form-data",
+            "application/x-www-form-urlencoded"
+          ],
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/feedback/": {
+        "get": {
+          "operationId": "events_feedback_list",
+          "description": "Returns a list of feedback for events based on query parameters.\nCan filter by event_id and user.",
+          "parameters": [
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/EventFeedback"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "post": {
+          "operationId": "events_feedback_create",
+          "description": "Create feedback for an event (authenticated users only, must be registered for the event).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/feedback/event_feedback/": {
+        "get": {
+          "operationId": "events_feedback_event_feedback",
+          "description": "Get all feedback for a specific event",
+          "parameters": [
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            },
+            {
+              "name": "event_id",
+              "in": "query",
+              "description": "ID of the event to get feedback for",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/EventFeedback"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Missing event_id parameter"
+            },
+            "404": {
+              "description": "Not Found - Event does not exist"
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/feedback/{id}/": {
+        "get": {
+          "operationId": "events_feedback_read",
+          "description": "Returns details of specific feedback.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "put": {
+          "operationId": "events_feedback_update",
+          "description": "Updates specific feedback (only for feedback owner or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "patch": {
+          "operationId": "events_feedback_partial_update",
+          "description": "Partially updates specific feedback (only for feedback owner or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventFeedback"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "delete": {
+          "operationId": "events_feedback_delete",
+          "description": "Deletes specific feedback (only for feedback owner or admin).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/events/gallery/": {
+        "get": {
+          "operationId": "events_gallery_list",
+          "description": "Returns a list of gallery images. Can filter by event_id.",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/EventGalleryImage"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "post": {
+          "operationId": "events_gallery_create",
+          "description": "Upload a new image to an event gallery. Use multipart/form-data",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "required": [
+                  "event",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "description": "Event ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Image file to upload",
+                    "type": "file"
+                  },
+                  "caption": {
+                    "description": "Optional caption for the image",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "event",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "description": "Event ID",
+                    "type": "integer"
+                  },
+                  "image": {
+                    "description": "Image file to upload",
+                    "type": "file"
+                  },
+                  "caption": {
+                    "description": "Optional caption for the image",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/gallery/event_gallery/": {
+        "get": {
+          "operationId": "events_gallery_event_gallery",
+          "description": "Get all gallery images for a specific event",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            },
+            {
+              "name": "event_id",
+              "in": "query",
+              "description": "ID of the event to get gallery images for",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/EventGalleryImage"
+                }
+              }
+            },
+            "400": {
+              "description": "Bad Request - Missing event_id parameter"
+            },
+            "404": {
+              "description": "Not Found - Event does not exist"
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/gallery/{id}/": {
+        "get": {
+          "operationId": "events_gallery_read",
+          "description": "Returns details of a specific gallery image.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventGalleryImage"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "put": {
+          "operationId": "events_gallery_update",
+          "description": "Updates a specific gallery image (only for event creators or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventGalleryImage"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventGalleryImage"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "patch": {
+          "operationId": "events_gallery_partial_update",
+          "description": "Partially updates a specific gallery image (only for event creators or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventGalleryImage"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventGalleryImage"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "delete": {
+          "operationId": "events_gallery_delete",
+          "description": "Deletes a specific gallery image (only for event creators or admin).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this event gallery image.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/events/notifications/": {
+        "get": {
+          "operationId": "events_notifications_list",
+          "description": "Returns a list of notifications for the authenticated user.\nCan filter by unread=true.",
+          "parameters": [
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Notification"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/notifications/mark_all_read/": {
+        "post": {
+          "operationId": "events_notifications_mark_all_read",
+          "description": "Mark all notifications as read",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Notification"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success response",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "description": "Status message",
+                    "type": "string"
+                  },
+                  "count": {
+                    "description": "Number of notifications marked as read",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/notifications/{id}/": {
+        "get": {
+          "operationId": "events_notifications_read",
+          "description": "Returns details of a specific notification.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Notification"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/events/notifications/{id}/mark_read/": {
+        "post": {
+          "operationId": "events_notifications_mark_read",
+          "description": "Mark a notification as read",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Notification"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Notification"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/events/registrations/": {
+        "get": {
+          "operationId": "events_registrations_list",
+          "description": "Returns a list of all registrations for the authenticated user.",
+          "parameters": [
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/EventRegistration"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "post": {
+          "operationId": "events_registrations_create",
+          "description": "Register for an event (authenticated users only).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": []
+      },
+      "/events/registrations/{id}/": {
+        "get": {
+          "operationId": "events_registrations_read",
+          "description": "Returns details of a specific registration.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "put": {
+          "operationId": "events_registrations_update",
+          "description": "Updates a specific registration (only for registration owner or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "patch": {
+          "operationId": "events_registrations_partial_update",
+          "description": "Partially updates a specific registration (only for registration owner or admin).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "delete": {
+          "operationId": "events_registrations_delete",
+          "description": "Cancels a registration (only for registration owner or admin).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/events/registrations/{id}/mark_attendance/": {
+        "patch": {
+          "operationId": "events_registrations_mark_attendance",
+          "description": "Mark attendance for a registration",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "required": [
+                  "attended"
+                ],
+                "type": "object",
+                "properties": {
+                  "attended": {
+                    "description": "Attendance status",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/EventRegistration"
+              }
+            }
+          },
+          "tags": [
+            "events"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      },
+      "/faculties/": {
+        "get": {
+          "operationId": "faculties_list",
+          "description": "Returns a list of all faculties.",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "A search term.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "ordering",
+              "in": "query",
+              "description": "Which field to use when ordering the results.",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Faculty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "post": {
+          "operationId": "faculties_create",
+          "description": "Creates a new faculty (authenticated users only).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "parameters": []
+      },
+      "/faculties/{id}/": {
+        "get": {
+          "operationId": "faculties_read",
+          "description": "Returns details of a specific faculty.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "put": {
+          "operationId": "faculties_update",
+          "description": "Updates a specific faculty (authenticated users only).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "patch": {
+          "operationId": "faculties_partial_update",
+          "description": "Partially updates a specific faculty (authenticated users only).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/Faculty"
+              }
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "delete": {
+          "operationId": "faculties_delete",
+          "description": "Deletes a specific faculty (authenticated users only).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "faculties"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this Faculty.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      },
+      "/users/": {
+        "get": {
+          "operationId": "users_list",
+          "description": "Return a list of all users (admin only).",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "required": [
+                  "count",
+                  "results"
+                ],
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "next": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "previous": {
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                  },
+                  "results": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "post": {
+          "operationId": "users_create",
+          "description": "Create a new user and return JWT tokens.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserCreate"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/UserCreate"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/auth/login/": {
+        "post": {
+          "operationId": "users_auth_login_create",
+          "description": "Takes a set of user credentials and returns an access and refresh JSON web token pair along with user details.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/CustomTokenObtainPair"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful login",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "access": {
+                    "description": "JWT access token",
+                    "type": "string"
+                  },
+                  "refresh": {
+                    "description": "JWT refresh token",
+                    "type": "string"
+                  },
+                  "user": {
+                    "description": "User details",
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid credentials"
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/auth/register/": {
+        "post": {
+          "operationId": "users_auth_register_create",
+          "description": "Register a new user account",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserCreate"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User created successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "description": "User data",
+                    "type": "object"
+                  },
+                  "refresh": {
+                    "description": "JWT refresh token",
+                    "type": "string"
+                  },
+                  "access": {
+                    "description": "JWT access token",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/auth/token/refresh/": {
+        "post": {
+          "operationId": "users_auth_token_refresh_create",
+          "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/TokenRefresh"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/TokenRefresh"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/auth/token/verify/": {
+        "post": {
+          "operationId": "users_auth_token_verify_create",
+          "description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/TokenVerify"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/TokenVerify"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/me/": {
+        "get": {
+          "operationId": "users_me",
+          "description": "Get the current authenticated user's details.",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "A page number within the paginated result set.",
+              "required": false,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": []
+      },
+      "/users/{id}/": {
+        "get": {
+          "operationId": "users_read",
+          "description": "Return the given user (admin or self).",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "put": {
+          "operationId": "users_update",
+          "description": "Update the given user (admin or self).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "patch": {
+          "operationId": "users_partial_update",
+          "description": "Partially update the given user (admin or self).",
+          "parameters": [
+            {
+              "name": "data",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "delete": {
+          "operationId": "users_delete",
+          "description": "Delete the given user (admin only).",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "users"
+          ]
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A unique integer value identifying this User.",
+            "required": true,
+            "type": "integer"
+          }
+        ]
+      }
+    },
+    "definitions": {
+      "FacultyMinimal": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          }
+        }
+      },
+      "Event": {
+        "required": [
+          "title",
+          "description",
+          "start_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "minLength": 1
+          },
+          "start_date": {
+            "title": "Start date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "event_type": {
+            "title": "Event type",
+            "type": "string",
+            "enum": [
+              "WORKSHOP",
+              "CONFERENCE",
+              "SEMINAR",
+              "SOCIAL",
+              "ACADEMIC",
+              "OTHER"
+            ],
+            "default": "OTHER"
+          },
+          "creator": {
+            "title": "Creator",
+            "type": "integer",
+            "x-nullable": true
+          },
+          "creator_details": {
+            "title": "Creator details",
+            "type": "string",
+            "readOnly": true
+          },
+          "faculty": {
+            "title": "Faculty",
+            "type": "integer",
+            "x-nullable": true
+          },
+          "faculty_details": {
+            "$ref": "#/definitions/FacultyMinimal"
+          },
+          "image": {
+            "title": "Image",
+            "type": "string",
+            "readOnly": true,
+            "x-nullable": true,
+            "format": "uri"
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "title": "Updated at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "is_past": {
+            "title": "Is past",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "gallery_images": {
+            "title": "Gallery images",
+            "type": "string",
+            "readOnly": true
+          },
+          "feedback": {
+            "title": "Feedback",
+            "type": "string",
+            "readOnly": true
+          },
+          "feedback_count": {
+            "title": "Feedback count",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Attendee": {
+        "required": [
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "user": {
+            "title": "User",
+            "type": "integer"
+          },
+          "user_details": {
+            "title": "User details",
+            "type": "string",
+            "readOnly": true
+          },
+          "attended": {
+            "title": "Attended",
+            "type": "boolean",
+            "default": false
+          },
+          "registered_at": {
+            "title": "Registered at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "EventStatistics": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "title": "Title",
+            "type": "string",
+            "readOnly": true,
+            "minLength": 1
+          },
+          "start_date": {
+            "title": "Start date",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "event_type": {
+            "title": "Event type",
+            "type": "string",
+            "enum": [
+              "WORKSHOP",
+              "CONFERENCE",
+              "SEMINAR",
+              "SOCIAL",
+              "ACADEMIC",
+              "OTHER"
+            ],
+            "readOnly": true
+          },
+          "total_participants": {
+            "title": "Total participants",
+            "type": "string",
+            "readOnly": true
+          },
+          "attended_count": {
+            "title": "Attended count",
+            "type": "string",
+            "readOnly": true
+          },
+          "attendance_rate": {
+            "title": "Attendance rate",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "EventFeedback": {
+        "required": [
+          "event",
+          "user",
+          "comment"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "event": {
+            "title": "Event",
+            "type": "integer"
+          },
+          "user": {
+            "title": "User",
+            "type": "integer"
+          },
+          "user_details": {
+            "title": "User details",
+            "type": "string",
+            "readOnly": true
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string",
+            "minLength": 1
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "title": "Updated at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "EventGalleryImage": {
+        "required": [
+          "event"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "event": {
+            "title": "Event",
+            "type": "integer"
+          },
+          "image": {
+            "title": "Image",
+            "type": "string",
+            "readOnly": true,
+            "format": "uri"
+          },
+          "caption": {
+            "title": "Caption",
+            "type": "string",
+            "maxLength": 255
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "title": "Updated at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "user": {
+            "title": "User",
+            "type": "integer",
+            "readOnly": true
+          },
+          "event": {
+            "title": "Event",
+            "type": "integer",
+            "readOnly": true
+          },
+          "event_details": {
+            "title": "Event details",
+            "type": "string",
+            "readOnly": true
+          },
+          "message": {
+            "title": "Message",
+            "type": "string",
+            "readOnly": true,
+            "minLength": 1
+          },
+          "notification_type": {
+            "title": "Notification type",
+            "type": "string",
+            "enum": [
+              "DAY_BEFORE",
+              "HOUR_BEFORE",
+              "CUSTOM"
+            ],
+            "readOnly": true
+          },
+          "is_read": {
+            "title": "Is read",
+            "type": "boolean",
+            "default": false
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "EventRegistration": {
+        "required": [
+          "event",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "event": {
+            "title": "Event",
+            "type": "integer"
+          },
+          "user": {
+            "title": "User",
+            "type": "integer"
+          },
+          "attended": {
+            "title": "Attended",
+            "type": "boolean",
+            "default": false
+          },
+          "registered_at": {
+            "title": "Registered at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "title": "Updated at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "user_details": {
+            "title": "User details",
+            "type": "string",
+            "readOnly": true
+          },
+          "event_details": {
+            "title": "Event details",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "Faculty": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "title": "Updated at",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "User": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "ID",
+            "type": "integer",
+            "readOnly": true
+          },
+          "email": {
+            "title": "Email Address",
+            "type": "string",
+            "format": "email",
+            "maxLength": 254,
+            "minLength": 1
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string",
+            "maxLength": 100
+          },
+          "role": {
+            "title": "Role",
+            "type": "string",
+            "enum": [
+              "GUEST",
+              "STUDENT",
+              "INSTRUCTOR",
+              "ADMIN"
+            ],
+            "default": "GUEST"
+          },
+          "faculty_fk": {
+            "title": "Faculty",
+            "type": "integer",
+            "x-nullable": true
+          },
+          "old_faculty": {
+            "title": "Old Faculty",
+            "type": "string",
+            "maxLength": 100
+          },
+          "faculty_details": {
+            "title": "Faculty details",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "UserCreate": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email Address",
+            "type": "string",
+            "format": "email",
+            "maxLength": 254,
+            "minLength": 1
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string",
+            "maxLength": 100
+          },
+          "role": {
+            "title": "Role",
+            "type": "string",
+            "enum": [
+              "GUEST",
+              "STUDENT",
+              "INSTRUCTOR",
+              "ADMIN"
+            ],
+            "default": "GUEST"
+          },
+          "faculty_fk": {
+            "title": "Faculty",
+            "type": "integer",
+            "x-nullable": true
+          },
+          "old_faculty": {
+            "title": "Old Faculty",
+            "type": "string",
+            "maxLength": 100
+          },
+          "faculty_details": {
+            "title": "Faculty details",
+            "type": "string",
+            "readOnly": true
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "CustomTokenObtainPair": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "TokenRefresh": {
+        "required": [
+          "refresh"
+        ],
+        "type": "object",
+        "properties": {
+          "refresh": {
+            "title": "Refresh",
+            "type": "string",
+            "minLength": 1
+          },
+          "access": {
+            "title": "Access",
+            "type": "string",
+            "readOnly": true,
+            "minLength": 1
+          }
+        }
+      },
+      "TokenVerify": {
+        "required": [
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
