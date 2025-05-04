@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import PropTypes from "prop-types";
@@ -7,7 +8,7 @@ const EventCard = ({ event }) => {
   const { t } = useTranslation();
 
   // Format date
-  const formattedDate = format(new Date(event.start_date), "PPP p");
+  const formattedDate = format(new Date(event.start_date), "MMM d, yyyy • h:mm a");
 
   // Default image if not provided
   const eventImage =
@@ -105,7 +106,7 @@ const EventCard = ({ event }) => {
           to={`/events/${event.id}`}
           className="block text-center bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-4 rounded transition duration-300"
         >
-          View Details
+          {t("viewDetails")}
         </Link>
       </div>
     </div>

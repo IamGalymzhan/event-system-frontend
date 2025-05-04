@@ -284,5 +284,16 @@
   "notRegisteredForEvent": "You are not registered for this event",
   "eventNotFound": "Event not found",
   "errorMarkingAttendance": "Error marking attendance. Please try again later.",
-  "errorFetchingData": "Error fetching data. Please try again later."
+  "errorFetchingData": "Error fetching data. Please try again later.",
+  "eventStatistics": "Event Statistics",
+  "totalParticipants": "Total Participants",
+  "attended": "Attended",
+  "attendanceRate": "Attendance Rate",
+  "downloadPdfReport": "Download PDF Report",
+  "loadingStatistics": "Loading Statistics...",
+  "loadingEvent": "Loading Event...",
+  "errorFetchingEvent": "Error fetching event data. Please try again later.",
+  "confirmDeleteEvent": "Are you sure you want to delete this event? This action cannot be undone.",
+  "backToEvents": "Back to Events",
+  "registerForEvent": "Register for Event"
 } 
