@@ -8,7 +8,10 @@ const EventCard = ({ event }) => {
   const { t } = useTranslation();
 
   // Format date
-  const formattedDate = format(new Date(event.start_date), "MMM d, yyyy • h:mm a");
+  const formattedDate = format(
+    new Date(event.start_date),
+    "MMM d, yyyy • h:mm a"
+  );
 
   // Default image if not provided
   const eventImage =
@@ -37,7 +40,7 @@ const EventCard = ({ event }) => {
         {event.is_past && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <span className="text-white text-lg font-semibold px-4 py-2 bg-black bg-opacity-70 rounded">
-              Past Event
+              {t("pastEventLabel")}
             </span>
           </div>
         )}

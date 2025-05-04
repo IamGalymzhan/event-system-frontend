@@ -99,6 +99,7 @@
   "alreadyRegistered": "You are already registered for this event.",
   "notRegistered": "You are not registered for this event.",
   "pastEvent": "This is a past event. Registration is closed.",
+  "pastEventLabel": "Past Event",
   "eventDetails": "Event Details",
   "createdBy": "Created by",
   "registrationClosed": "Registration closed",

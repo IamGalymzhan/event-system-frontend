@@ -99,6 +99,7 @@
   "alreadyRegistered": "Сіз бұл іс-шараға әлдеқашан тіркелгенсіз.",
   "notRegistered": "Сіз бұл іс-шараға тіркелмегенсіз.",
   "pastEvent": "Бұл өткен іс-шара. Тіркелу жабық.",
+  "pastEventLabel": "Өткен іс-шара",
   "eventDetails": "Іс-шара мәліметтері",
   "createdBy": "Жасаған",
   "registrationClosed": "Тіркелу жабық",
